@@ -37,8 +37,9 @@ $ npm run test:coverage
 This API is a simple but important API for motorway that is responsible for retrieving valuations for cars from a 3rd party (SuperCar Valuations) by the VRM (Vehicle Registration Mark) and mileage.
 
 - The API has two routes
-	- A PUT (/valuations/{vrm}) request to create a valuation for a vehicle which accepts a small amount of input data and performs some simple validation logic.
-	- A GET (/valuations/{vrm}) request to get an existing valuation. Returns 404 if no valuation for the vrm exists.
+
+  - A PUT (/valuations/{vrm}) request to create a valuation for a vehicle which accepts a small amount of input data and performs some simple validation logic.
+  - A GET (/valuations/{vrm}) request to get an existing valuation. Returns 404 if no valuation for the vrm exists.
 
 - The PUT operation handles calling a third-party API to perform the actual valuation, there is some rudimentary mapping logic between Motorway & 3rd party requests/responses.
 - The PUT request is not truly idempotent so the 3rd party is called each time this operation is called and the code catches duplicate key exceptions when writing to the database.
@@ -81,15 +82,14 @@ Here are a full list of tasks that need to be completed:
 
 - To help with auditing service level agreements with the providers over an indefinite time period, there is a need to store the following details of the request:
 
-    - Request date and time
-    - Request duration
-    - Request url
-    - Response code
-    - Error code/message if applicable and the
-    - Name of the provider
+  - Request date and time
+  - Request duration
+  - Request url
+  - Response code
+  - Error code/message if applicable and the
+  - Name of the provider
 
-    The details must be stored in a ProviderLogs table, which is correlated to a VRM, there could potentially be more than one log per VRM.
-
+  The details must be stored in a ProviderLogs table, which is correlated to a VRM, there could potentially be more than one log per VRM.
 
 ## 3rd Party APIs
 
@@ -117,6 +117,20 @@ The OpenAPI Specification can be found [here](http://localhost:3002/docs).
 
 The URI for this test stub in Mocky is https://run.mocky.io/v3/0dfda26a-3a5a-43e5-b68c-51f148eda473.
 
-
 # Candidate Notes
+
 Here is a place for you to put any notes regarding the changes you made and the reasoning and what further changes you wish to suggest.
+
+--
+
+Assumptions:
+
+- I'm committing directly to `main` for the sake of testing, treating it as if it were my own pull request. In a normal scenario, I would create multiple PRs—one for each task.
+
+### MOD_1
+
+- I added a test database. My assumption is that, for testing purposes, we want something disposable. The dev database sounded like something we'd use for everyone's development work, and we don't want to pollute or clean it up after tests.
+
+- I added a `.env.test` file, which can be committed since it points to a temporary test database.
+
+- I mocked the third-party endpoint using Nock to properly assess the tests. During testing, we don’t want to hit the actual endpoint. Additionally, Nock gives me better control over the mocking and testing behavior, allowing me to shape responses as needed.
