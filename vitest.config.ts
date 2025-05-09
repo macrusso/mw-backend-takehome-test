@@ -11,6 +11,7 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, 'packages/template/*'],
     globals: true,
     reporters: 'verbose',
+    isolate: true,
   },
   resolve: {
     alias: {

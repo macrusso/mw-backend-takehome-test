@@ -2,6 +2,7 @@ import { fastify } from '~root/test/fastify';
 import nock from 'nock';
 import { VehicleValuationRequest } from '../types/vehicle-valuation-request';
 import { VehicleValuation } from '@app/models/vehicle-valuation';
+import { SUPER_CAR_VALUATION_BASE_URL } from '@app/services/super-car/super-car-valuation';
 
 describe('ValuationController (e2e)', () => {
   beforeEach(async () => {
@@ -88,8 +89,8 @@ describe('ValuationController (e2e)', () => {
       const vrm = 'ABC123';
       const mileage = 10000;
 
-      const baseURL = 'https://run.mocky.io';
-      const path = `/v3/9245229e-5c57-44e1-964b-36c7fb29168b/valuations/${vrm}?mileage=${mileage}`;
+      const baseURL = SUPER_CAR_VALUATION_BASE_URL;
+      const path = `/valuations/${vrm}?mileage=${mileage}`;
 
       nock(baseURL)
         .get(path)
@@ -121,6 +122,7 @@ describe('ValuationController (e2e)', () => {
         vrm,
         lowestValue: 22350,
         highestValue: 24750,
+        provider: 'SuperCar',
       });
     });
   });

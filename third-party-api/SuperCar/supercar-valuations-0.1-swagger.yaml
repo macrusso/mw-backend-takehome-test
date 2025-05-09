@@ -31,31 +31,31 @@ paths:
               schema:
                 $ref: '#/definitions/ValuationResponse'
       servers:
-        - url: https://run.mocky.io/v3/9245229e-5c57-44e1-964b-36c7fb29168b
+        - url: https://run.mocky.io/v3/115b2045-7c0e-490a-a233-b928fd713f4c
 definitions:
   ValuationResponse:
     properties:
-      vin: 
+      vin:
         type: string
         example: 2HSCNAPRX7C385251
-      registrationDate: 
+      registrationDate:
         type: string
         example: 2012-06-14T00:00:00.0000000
-      plate: 
+      plate:
         type: object
-        properties: 
-          year: 
+        properties:
+          year:
             type: number
             example: 2012
-          month: 
+          month:
             type: number
             example: 4
-      valuation: 
+      valuation:
         type: object
-        properties: 
-          lowerValue: 
+        properties:
+          lowerValue:
             type: number
             example: 22350
-          upperValue: 
+          upperValue:
             type: number
             example: 24750

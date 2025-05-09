@@ -3,7 +3,7 @@ import {
   ValuationParams,
   VehicleValuationRequest,
 } from '@app/routes/valuation/types/vehicle-valuation-request';
-import { fetchValuationFromSuperCarValuation } from '@app/super-car/super-car-valuation';
+import { getValuationWithFailover } from '@app/services/valuation/valuation-with-failover';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 export const putValuationMiddleware = (fastify: FastifyInstance) => {
@@ -31,7 +31,22 @@ export const putValuationMiddleware = (fastify: FastifyInstance) => {
       });
     }
 
-    const valuation = await fetchValuationFromSuperCarValuation(vrm, mileage);
+    // Check if the valuation already exists in the database
+    const existingValuation = await valuationRepository.findOneBy({ vrm });
+    if (existingValuation) {
+      fastify.log.info('Existing valuation: ', existingValuation);
+      return existingValuation;
+    }
+
+    // If not, fetch the valuation from the provider
+    let valuation: VehicleValuation;
+    try {
+      ({ valuation } = await getValuationWithFailover(vrm, mileage));
+    } catch (error) {
+      return reply
+        .code(503)
+        .send({ message: 'All valuation providers failed' });
+    }
 
     // Save to DB, ignore duplicate key errors
     await valuationRepository.insert(valuation).catch((err) => {

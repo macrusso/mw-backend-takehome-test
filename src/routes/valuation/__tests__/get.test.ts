@@ -40,6 +40,7 @@ describe('ValuationController (e2e)', () => {
         vrm: 'ABC123',
         lowestValue: 1000,
         highestValue: 2000,
+        provider: 'SuperCar',
       });
 
       const res = await fastify.inject({
@@ -52,6 +53,7 @@ describe('ValuationController (e2e)', () => {
         vrm: 'ABC123',
         lowestValue: 1000,
         highestValue: 2000,
+        provider: 'SuperCar',
       });
     });
   });

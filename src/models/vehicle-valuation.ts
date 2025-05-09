@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { ProviderLog } from './provider-log';
 
 @Entity()
 export class VehicleValuation {
@@ -10,6 +11,12 @@ export class VehicleValuation {
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   highestValue: number;
+
+  @Column()
+  provider: string;
+
+  @OneToMany(() => ProviderLog, (log) => log.valuation)
+  logs: ProviderLog[];
 
   get midpointValue(): number {
     return (this.highestValue + this.lowestValue) / 2;

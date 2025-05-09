@@ -107,7 +107,7 @@ This is the current and preferred provider used for valuations, it is a fairly m
 
 The OpenAPI Specification can be found [here](http://localhost:3001/docs).
 
-The URI for this test stub in Mocky is https://run.mocky.io/v3/9245229e-5c57-44e1-964b-36c7fb29168b.
+The URI for this test stub in Mocky is https://run.mocky.io/v3/115b2045-7c0e-490a-a233-b928fd713f4c.
 
 ### Premium Car Valuations
 
@@ -115,7 +115,7 @@ This is the proposed fallback provider to be used for valuations, it is an old s
 
 The OpenAPI Specification can be found [here](http://localhost:3002/docs).
 
-The URI for this test stub in Mocky is https://run.mocky.io/v3/0dfda26a-3a5a-43e5-b68c-51f148eda473.
+The URI for this test stub in Mocky is https://run.mocky.io/v3/8ebd1750-55d4-4532-ab8d-58529e2cd2e5.
 
 # Candidate Notes
 
@@ -183,3 +183,42 @@ PUT:
 - Added tests to cover the `GET` `/valuation` endpoint. First, I check for a 404 response when the database is empty, then inject data to confirm a 200 response.
 
 - I also updated the `PUT` and `GET` tests to validate the response body in addition to the status code. This helps avoid false positives when the status code is the same but the response message differs.
+
+### MOD_4
+
+- Added a provider_log table and established a one-to-many relationship with vehicle_valuation. It's now possible to retrieve all logs for a specific VRM using:
+
+```
+const valuation = await valuationRepo.findOne({
+  where: { vrm: 'ABC123' },
+  relations: ['logs'],
+});
+```
+
+- I also implemented a handler for the Premium Car Valuation service, including an XML parser to process its response.
+
+- I moved all service-related files under a services/ folder to improve structure and maintain logical separation.
+
+- I added a simple failover counter service to handle switching between valuation providers. The behavior is configurable via environment variables:
+
+```
+FAILOVER_TIMEOUT_MS=300000        # defaults to 5 minutes
+FAILOVER_THRESHOLD=0.5            # defaults to 50%
+FAILOVER_REQUESTS=10              # defaults to 10 requests
+```
+
+- I also created new Mocky mocks and updated the code and documentation accordingly, as requested.
+
+##### Assumptions and Scalability
+
+This solution assumes a single-instance, low-scale service. For a production-scale or multi-node setup, the failover mechanism would need to be externalized using:
+
+- Redis for shared state
+
+- Load Balancer / API Gateway for routing
+
+- Service Mesh with Circuit Breakers
+
+##### Testing
+
+I aimed to spend ~2 hours as discussed. Unfortunately, I ran out of time and wasn’t able to add tests for the new failover feature yet.
