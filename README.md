@@ -186,7 +186,9 @@ PUT:
 
 ### MOD_4
 
-- Added a provider_log table and established a one-to-many relationship with vehicle_valuation. It's now possible to retrieve all logs for a specific VRM using:
+- Added a provider-log table and established a one-to-many relationship with vehicle_valuation. It's now possible to retrieve all logs for a specific VRM.
+
+  _Edit: However I forget to save those logs and then I ran out of time._
 
 ```
 const valuation = await valuationRepo.findOne({
