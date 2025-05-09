@@ -137,7 +137,7 @@ Assumptions:
 
 ### MOD_2
 
-- I refactored the PUT and GET middlewares into separate files. This improves readability, logically separates the code, and keeps the route file smaller. It also leaves room to add schema validation later.
+- I refactored the `PUT` and `GET` middlewares into separate files. This improves readability, logically separates the code, and keeps the route file smaller. It also leaves room to add schema validation later.
 
 - I also split the tests into separate files based on their request method. This makes it easier to modify and locate specific tests, and it logically aligns with how the middleware is structured.
 
@@ -177,3 +177,9 @@ PUT:
     },
   }
 ```
+
+### MOD_3
+
+- Added tests to cover the `GET` `/valuation` endpoint. First, I check for a 404 response when the database is empty, then inject data to confirm a 200 response.
+
+- I also updated the `PUT` and `GET` tests to validate the response body in addition to the status code. This helps avoid false positives when the status code is the same but the response message differs.

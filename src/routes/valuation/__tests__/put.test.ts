@@ -22,6 +22,11 @@ describe('ValuationController (e2e)', () => {
       });
 
       expect(res.statusCode).toStrictEqual(404);
+      expect(res.json()).toEqual({
+        error: 'Not Found',
+        message: 'Route PUT:/valuations not found',
+        statusCode: 404,
+      });
     });
 
     it('should return 400 if VRM is 8 characters or more', async () => {
@@ -36,6 +41,10 @@ describe('ValuationController (e2e)', () => {
       });
 
       expect(res.statusCode).toStrictEqual(400);
+      expect(res.json()).toEqual({
+        message: 'vrm must be 7 characters or less',
+        statusCode: 400,
+      });
     });
 
     it('should return 400 if mileage is missing', async () => {
@@ -51,6 +60,10 @@ describe('ValuationController (e2e)', () => {
       });
 
       expect(res.statusCode).toStrictEqual(400);
+      expect(res.json()).toEqual({
+        message: 'mileage must be a positive number',
+        statusCode: 400,
+      });
     });
 
     it('should return 400 if mileage is negative', async () => {
@@ -65,6 +78,10 @@ describe('ValuationController (e2e)', () => {
       });
 
       expect(res.statusCode).toStrictEqual(400);
+      expect(res.json()).toEqual({
+        message: 'mileage must be a positive number',
+        statusCode: 400,
+      });
     });
 
     it('should return 200 with valid request', async () => {
@@ -100,6 +117,11 @@ describe('ValuationController (e2e)', () => {
       });
 
       expect(res.statusCode).toStrictEqual(200);
+      expect(res.json()).toEqual({
+        vrm,
+        lowestValue: 22350,
+        highestValue: 24750,
+      });
     });
   });
 });
