@@ -134,3 +134,46 @@ Assumptions:
 - I added a `.env.test` file, which can be committed since it points to a temporary test database.
 
 - I mocked the third-party endpoint using Nock to properly assess the tests. During testing, we don’t want to hit the actual endpoint. Additionally, Nock gives me better control over the mocking and testing behavior, allowing me to shape responses as needed.
+
+### MOD_2
+
+- I refactored the PUT and GET middlewares into separate files. This improves readability, logically separates the code, and keeps the route file smaller. It also leaves room to add schema validation later.
+
+- I also split the tests into separate files based on their request method. This makes it easier to modify and locate specific tests, and it logically aligns with how the middleware is structured.
+
+- Fastify allows adding schema validation, but doing so would require rewriting the middleware since parameter and body checks would no longer be needed. I decided not to proceed with that change for now, but below are the schemas I would use.
+
+GET:
+
+```
+  schema: {
+    params: {
+      type: 'object',
+      properties: {
+        vrm: { type: 'string', maxLength: 7, minLength: 1 },
+      },
+      required: ['vrm'],
+    },
+  }
+```
+
+PUT:
+
+```
+  schema: {
+    params: {
+      type: 'object',
+      properties: {
+        vrm: { type: 'string', maxLength: 7, minLength: 1 },
+      },
+      required: ['vrm'],
+    },
+    body: {
+      type: 'object',
+      properties: {
+        mileage: { type: 'number', minimum: 1 },
+      },
+      required: ['mileage'],
+    },
+  }
+```
